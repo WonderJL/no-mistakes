@@ -40,20 +40,35 @@ func installLaunchAgent(p *paths.Paths, exe string) error {
 	return nil
 }
 
-// cleanupLegacyLaunchAgent removes any plist installed by a pre-scoping
-// binary at the globally-named path so the new scoped install is the only
-// managed daemon for this user going forward. We bootout the legacy label
-// before deleting so an already-loaded legacy daemon is released from
-// launchd (it will exit on SIGTERM). Any error is best-effort: if there's
-// no legacy plist or launchctl refuses, we proceed with the scoped install.
+// cleanupLegacyLaunchAgent removes plists installed by an earlier binary so
+// the new scoped install is the only managed daemon for this user going
+// forward. Two legacy artifacts are handled:
+//
+//   - the globally-named (unscoped) plist a pre-scoping binary installed at
+//     legacyLaunchdServiceLabel + ".plist"; and
+//   - the per-install scoped plist the previous kunchenguid-labeled binary
+//     installed at legacyLaunchdServiceLabel + "." + suffix + ".plist". After
+//     a hard fork renames the label base, that is the label the user's
+//     currently-live daemon runs under, so it must be booted out too or it is
+//     orphaned in launchd alongside the new com.wonderjl daemon.
+//
+// For each we bootout the label before deleting so an already-loaded legacy
+// daemon is released from launchd (it will exit on SIGTERM). Both are gated on
+// the plist definition matching p.Root() so we never tear down a daemon owned
+// by a different NM_HOME. Any error is best-effort: if there's no legacy plist
+// or launchctl refuses, we proceed with the scoped install.
 func cleanupLegacyLaunchAgent(p *paths.Paths) {
-	path := legacyLaunchAgentPath()
+	cleanupLegacyLaunchAgentInstance(p, legacyLaunchdServiceLabel, legacyLaunchAgentPath())
+	cleanupLegacyLaunchAgentInstance(p, suffixedLegacyLaunchdServiceLabel(p), suffixedLegacyLaunchAgentPath(p))
+}
+
+func cleanupLegacyLaunchAgentInstance(p *paths.Paths, label, path string) {
 	data, err := os.ReadFile(path)
 	if err != nil || !serviceDefinitionMatchesRoot(data, p) {
 		return
 	}
 	if domain, err := launchdDomainTarget(); err == nil {
-		_, _ = serviceCommandRunner("launchctl", "bootout", domain+"/"+legacyLaunchdServiceLabel)
+		_, _ = serviceCommandRunner("launchctl", "bootout", domain+"/"+label)
 	}
 	_ = os.Remove(path)
 }
@@ -160,6 +175,19 @@ func launchAgentPath(p *paths.Paths) string {
 func legacyLaunchAgentPath() string {
 	home, _ := serviceUserHomeDir()
 	return filepath.Join(home, "Library", "LaunchAgents", legacyLaunchdServiceLabel+".plist")
+}
+
+// suffixedLegacyLaunchdServiceLabel is the per-install scoped label the
+// previous kunchenguid-labeled binary ran the daemon under for this root,
+// before the label base was renamed to com.wonderjl. It is the live daemon's
+// label that the migration in cleanupLegacyLaunchAgent boots out.
+func suffixedLegacyLaunchdServiceLabel(p *paths.Paths) string {
+	return legacyLaunchdServiceLabel + "." + serviceInstanceSuffix(p)
+}
+
+func suffixedLegacyLaunchAgentPath(p *paths.Paths) string {
+	home, _ := serviceUserHomeDir()
+	return filepath.Join(home, "Library", "LaunchAgents", suffixedLegacyLaunchdServiceLabel(p)+".plist")
 }
 
 func launchdDomainTarget() (string, error) {

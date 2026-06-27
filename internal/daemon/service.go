@@ -20,7 +20,7 @@ import (
 // with different NM_HOMEs cannot collide in the global launchctl/systemctl/
 // schtasks namespace. See serviceInstanceSuffix for the full rationale.
 const (
-	launchdServiceLabelBase = "com.kunchenguid.no-mistakes.daemon"
+	launchdServiceLabelBase = "com.wonderjl.no-mistakes.daemon"
 	systemdServiceNameBase  = "no-mistakes-daemon"
 	windowsTaskNameBase     = "no-mistakes-daemon"
 )
@@ -66,9 +66,9 @@ func defaultServiceManagerBypassed() bool {
 // name + path, Windows task name) are scoped per-install instead of sharing
 // a single globally unique identifier per user.
 //
-// Without scoping, the launchd label com.kunchenguid.no-mistakes.daemon (and
+// Without scoping, the launchd label com.wonderjl.no-mistakes.daemon (and
 // its systemd/Windows equivalents) is a shared slot. Any no-mistakes process
-// on the machine can `launchctl bootout gui/<uid>/com.kunchenguid.no-mistakes.daemon`
+// on the machine can `launchctl bootout gui/<uid>/com.wonderjl.no-mistakes.daemon`
 // and tear down another install's daemon. The failure mode observed twice in
 // practice: a pipeline review step ran `go test ./internal/daemon` in a
 // worktree, that test binary reached TestStopNotRunningIsNoop which calls
