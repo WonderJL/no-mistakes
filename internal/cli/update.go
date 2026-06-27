@@ -1,8 +1,8 @@
 package cli
 
 import (
-	"github.com/kunchenguid/no-mistakes/internal/update"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/update"
 )
 
 func newUpdateCmd() *cobra.Command {

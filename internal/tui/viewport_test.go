@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/kunchenguid/no-mistakes/internal/types"
 	"github.com/muesli/termenv"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 func TestRenderFindings_ViewportShowsSubset(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/telemetry"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/telemetry"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // trackAxiSurface records an agent-driven axi command both as a pageview and as

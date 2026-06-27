@@ -1,6 +1,6 @@
 package tui
 
-import "github.com/kunchenguid/no-mistakes/internal/ipc"
+import "github.com/wonderjl/no-mistakes/internal/ipc"
 
 // eventMsg wraps an IPC event received from the daemon.
 type eventMsg struct {

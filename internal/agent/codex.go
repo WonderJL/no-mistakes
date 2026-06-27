@@ -12,7 +12,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kunchenguid/no-mistakes/internal/shellenv"
+	"github.com/wonderjl/no-mistakes/internal/shellenv"
 )
 
 // codexAgent spawns the codex CLI for each invocation.

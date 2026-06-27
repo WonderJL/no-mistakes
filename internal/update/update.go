@@ -10,9 +10,9 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/buildinfo"
-	"github.com/kunchenguid/no-mistakes/internal/daemon"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/buildinfo"
+	"github.com/wonderjl/no-mistakes/internal/daemon"
+	"github.com/wonderjl/no-mistakes/internal/paths"
 )
 
 const (

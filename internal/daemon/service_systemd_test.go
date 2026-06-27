@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/paths"
 )
 
 func TestStartInstallsSystemdUnitAndStartsManagedDaemon(t *testing.T) {

@@ -3,9 +3,9 @@ package cli
 import (
 	"fmt"
 
-	"github.com/kunchenguid/no-mistakes/internal/gate"
-	"github.com/kunchenguid/no-mistakes/internal/safeurl"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/gate"
+	"github.com/wonderjl/no-mistakes/internal/safeurl"
 )
 
 func newEjectCmd() *cobra.Command {

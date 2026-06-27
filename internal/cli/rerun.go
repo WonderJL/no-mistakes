@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kunchenguid/no-mistakes/internal/daemon"
-	"github.com/kunchenguid/no-mistakes/internal/git"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/daemon"
+	"github.com/wonderjl/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
 )
 
 func newRerunCmd() *cobra.Command {

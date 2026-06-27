@@ -5,8 +5,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/db"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/db"
 )
 
 func newRunsCmd() *cobra.Command {

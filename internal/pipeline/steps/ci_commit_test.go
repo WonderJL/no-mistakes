@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/config"
 )
 
 func TestCIStep_CommitAndPush(t *testing.T) {

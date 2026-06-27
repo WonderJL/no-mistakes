@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/config"
-	"github.com/kunchenguid/no-mistakes/internal/telemetry"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/telemetry"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 func TestExecutor_ApprovalFix(t *testing.T) {

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kunchenguid/no-mistakes/internal/shellenv"
+	"github.com/wonderjl/no-mistakes/internal/shellenv"
 )
 
 // piAgent spawns the pi CLI for each invocation. Pi reads its prompt from

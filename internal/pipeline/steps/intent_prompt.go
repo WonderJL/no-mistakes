@@ -3,8 +3,8 @@ package steps
 import (
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/intent"
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/intent"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
 )
 
 // userIntentPromptSection returns a prompt fragment describing the inferred

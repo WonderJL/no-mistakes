@@ -18,7 +18,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/kunchenguid/no-mistakes/internal/skill"
+	"github.com/wonderjl/no-mistakes/internal/skill"
 )
 
 func main() {

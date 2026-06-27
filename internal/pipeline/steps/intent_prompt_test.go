@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
 )
 
 func TestUserIntentPromptSection_Empty(t *testing.T) {

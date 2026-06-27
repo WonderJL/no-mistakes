@@ -6,12 +6,12 @@ import (
 	"io"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/kunchenguid/no-mistakes/internal/buildinfo"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/git"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
 	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/buildinfo"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/paths"
 )
 
 // exitError carries an explicit process exit code. Commands that render their

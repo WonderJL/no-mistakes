@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
 )
 
 func TestServerClose(t *testing.T) {

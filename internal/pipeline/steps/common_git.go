@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/git"
 )
 
 // resolveBaseSHA returns a usable base SHA for diff/log operations.

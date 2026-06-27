@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/kunchenguid/no-mistakes/internal/telemetry"
+	"github.com/wonderjl/no-mistakes/internal/telemetry"
 )
 
 type recordedTelemetryEvent struct {

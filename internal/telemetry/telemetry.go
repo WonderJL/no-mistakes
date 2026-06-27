@@ -17,7 +17,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/buildinfo"
+	"github.com/wonderjl/no-mistakes/internal/buildinfo"
 )
 
 const (

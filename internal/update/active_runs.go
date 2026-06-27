@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/db"
 )
 
 func (u *updater) confirmActiveRunsBeforeUpdate() error {

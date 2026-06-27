@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/config"
 )
 
 func testEvidenceRoot() string {

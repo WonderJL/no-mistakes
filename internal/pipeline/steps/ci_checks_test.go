@@ -3,7 +3,7 @@ package steps
 import (
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/scm"
+	"github.com/wonderjl/no-mistakes/internal/scm"
 )
 
 func TestPendingCheckMatchesLastFixed_SpecialCheckNames(t *testing.T) {

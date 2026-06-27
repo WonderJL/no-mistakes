@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/paths"
 )
 
 func serviceDefinitionMatchesRoot(data []byte, p *paths.Paths) bool {

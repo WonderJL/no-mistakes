@@ -7,16 +7,16 @@ import (
 	"os"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/daemon"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/telemetry"
-	"github.com/kunchenguid/no-mistakes/internal/tui"
-	"github.com/kunchenguid/no-mistakes/internal/types"
-	"github.com/kunchenguid/no-mistakes/internal/update"
-	"github.com/kunchenguid/no-mistakes/internal/wizard"
 	"github.com/mattn/go-isatty"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/daemon"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/telemetry"
+	"github.com/wonderjl/no-mistakes/internal/tui"
+	"github.com/wonderjl/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/update"
+	"github.com/wonderjl/no-mistakes/internal/wizard"
 )
 
 var runTUI = tui.Run

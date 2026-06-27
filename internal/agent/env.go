@@ -1,6 +1,6 @@
 package agent
 
-import "github.com/kunchenguid/no-mistakes/internal/git"
+import "github.com/wonderjl/no-mistakes/internal/git"
 
 // gitSafeEnv returns the environment for a spawned agent subprocess with git
 // forced into non-interactive mode. Agents shell out to git directly (for

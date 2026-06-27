@@ -9,10 +9,10 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
-	"github.com/kunchenguid/no-mistakes/internal/safeurl"
-	"github.com/kunchenguid/no-mistakes/internal/scm"
-	"github.com/kunchenguid/no-mistakes/internal/shellenv"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/safeurl"
+	"github.com/wonderjl/no-mistakes/internal/scm"
+	"github.com/wonderjl/no-mistakes/internal/shellenv"
 )
 
 func envValue(env []string, key string) (string, bool) {

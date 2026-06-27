@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/daemon"
-	"github.com/kunchenguid/no-mistakes/internal/gate"
-	"github.com/kunchenguid/no-mistakes/internal/safeurl"
-	"github.com/kunchenguid/no-mistakes/internal/skill"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/daemon"
+	"github.com/wonderjl/no-mistakes/internal/gate"
+	"github.com/wonderjl/no-mistakes/internal/safeurl"
+	"github.com/wonderjl/no-mistakes/internal/skill"
 )
 
 const banner = `_  _ ____    _  _ _ ____ ___ ____ _  _ ____ ____

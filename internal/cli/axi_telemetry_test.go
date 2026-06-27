@@ -3,7 +3,7 @@ package cli
 import (
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/telemetry"
+	"github.com/wonderjl/no-mistakes/internal/telemetry"
 )
 
 // TestAxiCommandsEmitPageviews verifies that every agent-facing axi command

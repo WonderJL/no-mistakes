@@ -9,7 +9,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // Agent is the interface for running AI agent tasks.
