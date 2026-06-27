@@ -7,73 +7,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/wonderjl/no-mistakes/internal/db"
 	"github.com/wonderjl/no-mistakes/internal/ipc"
 	"github.com/wonderjl/no-mistakes/internal/pipeline"
-	"github.com/wonderjl/no-mistakes/internal/telemetry"
 	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // --- RunManager integration tests ---
-
-func TestPushReceivedTracksRunTelemetry(t *testing.T) {
-	recorder := &telemetryRecorder{}
-	restore := telemetry.SetDefaultForTesting(recorder)
-	defer restore()
-
-	step := &mockPassStep{name: types.StepReview}
-	p, d := startTestDaemonWithSteps(t, func() []pipeline.Step {
-		return []pipeline.Step{step}
-	})
-
-	_, headSHA := setupTestGitRepo(t, p, d, "telemetry-run-repo")
-
-	client, err := ipc.Dial(p.Socket())
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer client.Close()
-
-	var result ipc.PushReceivedResult
-	err = client.Call(ipc.MethodPushReceived, &ipc.PushReceivedParams{
-		Gate: p.RepoDir("telemetry-run-repo"),
-		Ref:  "refs/heads/main",
-		Old:  "0000000000000000000000000000000000000000",
-		New:  headSHA,
-	}, &result)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	run := waitForRunTerminalState(t, d, result.RunID)
-	if run.Status != types.RunCompleted {
-		t.Fatalf("run status = %q, want %q", run.Status, types.RunCompleted)
-	}
-
-	started := recorder.find("run", "action", "started")
-	if started == nil {
-		t.Fatal("expected run started telemetry event")
-	}
-	if got := started.fields["trigger"]; got != "push" {
-		t.Fatalf("started trigger = %v, want push", got)
-	}
-	if got := started.fields["agent"]; got != string(types.AgentClaude) {
-		t.Fatalf("started agent = %v, want %q", got, types.AgentClaude)
-	}
-	if got := started.fields["branch_role"]; got != "default" {
-		t.Fatalf("started branch_role = %v, want default", got)
-	}
-
-	finished := recorder.find("run", "action", "finished")
-	if finished == nil {
-		t.Fatal("expected run finished telemetry event")
-	}
-	if got := finished.fields["status"]; got != string(types.RunCompleted) {
-		t.Fatalf("finished status = %v, want %q", got, types.RunCompleted)
-	}
-	if _, ok := finished.fields["duration_ms"]; !ok {
-		t.Fatal("expected duration_ms in run finished telemetry")
-	}
-}
 
 func TestPushReceivedSkipStepsConfiguresExecutor(t *testing.T) {
 	review := &mockPassStep{name: types.StepReview}
@@ -328,17 +268,15 @@ func writeManagerClaudeFixture(t *testing.T, home, repoCWD string, lines []strin
 	}
 }
 
-func TestPushReceivedTracksRunTelemetryAfterPanic(t *testing.T) {
-	recorder := &telemetryRecorder{}
-	restore := telemetry.SetDefaultForTesting(recorder)
-	defer restore()
-
+// A panicking pipeline step must not take down the daemon: the recover in the
+// run goroutine has to mark the run failed with an "internal panic" error.
+func TestPushReceivedRecoversFromStepPanic(t *testing.T) {
 	step := &mockPanicStep{name: types.StepReview}
 	p, d := startTestDaemonWithSteps(t, func() []pipeline.Step {
 		return []pipeline.Step{step}
 	})
 
-	_, headSHA := setupTestGitRepo(t, p, d, "telemetry-panic-repo")
+	_, headSHA := setupTestGitRepo(t, p, d, "panic-repo")
 
 	client, err := ipc.Dial(p.Socket())
 	if err != nil {
@@ -348,7 +286,7 @@ func TestPushReceivedTracksRunTelemetryAfterPanic(t *testing.T) {
 
 	var result ipc.PushReceivedResult
 	err = client.Call(ipc.MethodPushReceived, &ipc.PushReceivedParams{
-		Gate: p.RepoDir("telemetry-panic-repo"),
+		Gate: p.RepoDir("panic-repo"),
 		Ref:  "refs/heads/main",
 		Old:  "0000000000000000000000000000000000000000",
 		New:  headSHA,
@@ -357,9 +295,10 @@ func TestPushReceivedTracksRunTelemetryAfterPanic(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	var run *db.Run
 	deadline := time.Now().Add(5 * time.Second)
 	for time.Now().Before(deadline) {
-		run, err := d.GetRun(result.RunID)
+		run, err = d.GetRun(result.RunID)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -369,15 +308,11 @@ func TestPushReceivedTracksRunTelemetryAfterPanic(t *testing.T) {
 		time.Sleep(50 * time.Millisecond)
 	}
 
-	finished := recorder.find("run", "action", "finished")
-	if finished == nil {
-		t.Fatal("expected run finished telemetry event after panic")
+	if run == nil || run.Error == nil || !strings.Contains(*run.Error, "internal panic") {
+		t.Fatalf("expected run to record an internal panic error, got %+v", run)
 	}
-	if got := finished.fields["status"]; got != string(types.RunFailed) {
-		t.Fatalf("finished status = %v, want %q", got, types.RunFailed)
-	}
-	if _, ok := finished.fields["duration_ms"]; !ok {
-		t.Fatal("expected duration_ms in run finished telemetry after panic")
+	if run.Status != types.RunFailed {
+		t.Fatalf("run status = %q, want %q", run.Status, types.RunFailed)
 	}
 }
 

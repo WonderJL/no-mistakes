@@ -17,7 +17,6 @@ import (
 	"github.com/wonderjl/no-mistakes/internal/git"
 	"github.com/wonderjl/no-mistakes/internal/ipc"
 	"github.com/wonderjl/no-mistakes/internal/paths"
-	"github.com/wonderjl/no-mistakes/internal/telemetry"
 	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
@@ -73,18 +72,12 @@ func newAxiRunCmd() *cobra.Command {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return trackAxiSurface("axi-run", "/axi/run", telemetry.Fields{
-				"auto_yes":   autoYes,
-				"has_intent": strings.TrimSpace(intent) != "",
-				"has_skip":   strings.TrimSpace(skipValue) != "",
-			}, func() error {
-				skipSteps, err := parseSkipSteps(skipValue)
-				if err != nil {
-					return emitError(cmd, 2, err.Error(),
-						"Valid steps: intent, rebase, review, test, document, lint, push, pr, ci")
-				}
-				return runAxiRun(cmd, autoYes, skipSteps, intent)
-			})
+			skipSteps, err := parseSkipSteps(skipValue)
+			if err != nil {
+				return emitError(cmd, 2, err.Error(),
+					"Valid steps: intent, rebase, review, test, document, lint, push, pr, ci")
+			}
+			return runAxiRun(cmd, autoYes, skipSteps, intent)
 		},
 	}
 	cmd.Flags().BoolVarP(&autoYes, "yes", "y", false, "auto-resolve every gate (fix findings, then accept) until a decision point or outcome")
@@ -542,18 +535,13 @@ func newAxiRespondCmd() *cobra.Command {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return trackAxiSurface("axi-respond", "/axi/respond", telemetry.Fields{
-				"action":   sanitizeAxiTelemetryAction(action),
-				"auto_yes": autoYes,
-			}, func() error {
-				return runAxiRespond(cmd, respondArgs{
-					action:       action,
-					step:         step,
-					findings:     findings,
-					instructions: instructions,
-					addFinding:   addFinding,
-					autoYes:      autoYes,
-				})
+			return runAxiRespond(cmd, respondArgs{
+				action:       action,
+				step:         step,
+				findings:     findings,
+				instructions: instructions,
+				addFinding:   addFinding,
+				autoYes:      autoYes,
 			})
 		},
 	}
@@ -687,9 +675,7 @@ func newAxiAbortCmd() *cobra.Command {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return trackAxiSurface("axi-abort", "/axi/abort", nil, func() error {
-				return runAxiAbort(cmd)
-			})
+			return runAxiAbort(cmd)
 		},
 	}
 	return cmd
