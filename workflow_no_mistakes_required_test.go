@@ -7,7 +7,7 @@ import (
 )
 
 // TestNoMistakesRequiredWorkflowExemptsReleaseAutomation pins the exemption
-// logic so the release pipeline (release-please via GITHUB_TOKEN) and
+// logic so automation accounts (github-actions[bot] via GITHUB_TOKEN) and
 // dependabot are never silently blocked by the gate.
 func TestNoMistakesRequiredWorkflowExemptsReleaseAutomation(t *testing.T) {
 	data, err := os.ReadFile(".github/workflows/no-mistakes-required.yml")
@@ -19,7 +19,6 @@ func TestNoMistakesRequiredWorkflowExemptsReleaseAutomation(t *testing.T) {
 	exempt := []string{
 		"github-actions[bot]",
 		"dependabot[bot]",
-		"release-please[bot]",
 	}
 	for _, login := range exempt {
 		needle := "github.event.pull_request.user.login != '" + login + "'"
