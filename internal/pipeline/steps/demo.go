@@ -91,14 +91,14 @@ func DemoSteps() []pipeline.Step {
 			name:       types.StepPush,
 			delay:      2 * time.Second,
 			displayDur: 5 * time.Second,
-			log:        "Pushing to origin...\nTo github.com:kunchenguid/no-mistakes.git\n   a1b2c3d..e4f5g6h  fix/nil-check -> fix/nil-check",
+			log:        "Pushing to origin...\nTo github.com:wonderjl/no-mistakes.git\n   a1b2c3d..e4f5g6h  fix/nil-check -> fix/nil-check",
 		},
 		&demoStep{
 			name:       types.StepPR,
 			delay:      3 * time.Second,
 			displayDur: 8 * time.Second,
-			log:        "Creating pull request...\nhttps://github.com/kunchenguid/no-mistakes/pull/42",
-			prURL:      "https://github.com/kunchenguid/no-mistakes/pull/42",
+			log:        "Creating pull request...\nhttps://github.com/wonderjl/no-mistakes/pull/42",
+			prURL:      "https://github.com/wonderjl/no-mistakes/pull/42",
 		},
 		&demoCIStep{
 			displayDur: 120 * time.Second,

@@ -29,7 +29,7 @@ func TestBuildPipelineSummary_AllClean(t *testing.T) {
 	if !strings.Contains(md, "## Pipeline") {
 		t.Error("missing Pipeline heading")
 	}
-	if !strings.Contains(md, "[git push no-mistakes](https://github.com/kunchenguid/no-mistakes)") {
+	if !strings.Contains(md, "[git push no-mistakes](https://github.com/wonderjl/no-mistakes)") {
 		t.Errorf("expected linked tagline, got:\n%s", md)
 	}
 	if strings.Count(md, "<details>") != len(steps) {

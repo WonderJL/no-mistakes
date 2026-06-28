@@ -6,10 +6,10 @@ import (
 	"testing"
 )
 
-// TestNoMistakesRequiredWorkflowExemptsReleaseAutomation pins the exemption
+// TestNoMistakesRequiredWorkflowExemptsBotAutomation pins the exemption
 // logic so automation accounts (github-actions[bot] via GITHUB_TOKEN) and
 // dependabot are never silently blocked by the gate.
-func TestNoMistakesRequiredWorkflowExemptsReleaseAutomation(t *testing.T) {
+func TestNoMistakesRequiredWorkflowExemptsBotAutomation(t *testing.T) {
 	data, err := os.ReadFile(".github/workflows/no-mistakes-required.yml")
 	if err != nil {
 		t.Fatalf("read workflow: %v", err)
@@ -38,7 +38,7 @@ func TestNoMistakesRequiredWorkflowChecksSignatureMarker(t *testing.T) {
 	}
 	content := string(data)
 
-	marker := "Updates from [git push no-mistakes](https://github.com/kunchenguid/no-mistakes)"
+	marker := "Updates from [git push no-mistakes](https://github.com/wonderjl/no-mistakes)"
 	if !strings.Contains(content, marker) {
 		t.Fatalf("workflow must grep for the prsummary.go signature marker:\n  %s", marker)
 	}

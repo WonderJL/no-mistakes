@@ -1,19 +1,14 @@
 <h1 align="center"><code>git push no-mistakes</code></h1>
 <p align="center">
-  <a href="https://github.com/kunchenguid/no-mistakes/actions/workflows/release.yml"
-    ><img
-      alt="Release"
-      src="https://img.shields.io/github/actions/workflow/status/kunchenguid/no-mistakes/release.yml?style=flat-square&label=release"
-  /></a>
   <a href="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue?style=flat-square"
     ><img
       alt="Platform"
       src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue?style=flat-square"
   /></a>
-  <a href="https://x.com/kunchenguid"
+  <a href="https://x.com/wonderjl"
     ><img
       alt="X"
-      src="https://img.shields.io/badge/X-@kunchenguid-black?style=flat-square"
+      src="https://img.shields.io/badge/X-@wonderjl-black?style=flat-square"
   /></a>
   <a href="https://discord.gg/Wsy2NpnZDu"
     ><img
@@ -27,7 +22,7 @@
 <p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/kunchenguid/no-mistakes/main/demo.gif" alt="no-mistakes demo" width="800" />
+  <img src="https://raw.githubusercontent.com/wonderjl/no-mistakes/main/demo.gif" alt="no-mistakes demo" width="800" />
 </p>
 
 `no-mistakes` puts a local git proxy in front of your real remote.
@@ -39,7 +34,7 @@ Push to `no-mistakes` instead of `origin`, and it spins up a disposable worktree
 - **Human stays in charge** - auto-fix or review findings, your call.
 - **Clean PRs by default** - push, open PR, watch CI, and auto-fix failures in one shot.
 
-Full documentation: <https://kunchenguid.github.io/no-mistakes/>
+Full documentation: <https://wonderjl.github.io/no-mistakes/>
 
 ## How it works
 
@@ -63,10 +58,10 @@ Nothing reaches the configured push target until every check is green.
 ## Install
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/kunchenguid/no-mistakes/main/docs/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/wonderjl/no-mistakes/main/docs/install.sh | sh
 ```
 
-Windows, Go install, and build-from-source instructions are in the [installation guide](https://kunchenguid.github.io/no-mistakes/start-here/installation/).
+Windows, Go install, and build-from-source instructions are in the [installation guide](https://wonderjl.github.io/no-mistakes/start-here/installation/).
 
 ## Quick Start
 
@@ -112,7 +107,7 @@ Every change runs through the same pipeline. Pick the entry point that fits how 
 
 `no-mistakes init` installs the `/no-mistakes` skill for Claude Code and other agents. Under the hood the skill drives `no-mistakes axi`, a non-interactive TOON interface to the same approval flow.
 
-See the [quick start](https://kunchenguid.github.io/no-mistakes/start-here/quick-start/) for the full first-run walkthrough.
+See the [quick start](https://wonderjl.github.io/no-mistakes/start-here/quick-start/) for the full first-run walkthrough.
 
 ## Development
 
@@ -134,10 +129,10 @@ See `Makefile` for the full target list.
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=kunchenguid%2Fno-mistakes&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=wonderjl%2Fno-mistakes&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=kunchenguid/no-mistakes&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=kunchenguid/no-mistakes&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=kunchenguid/no-mistakes&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=wonderjl/no-mistakes&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=wonderjl/no-mistakes&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=wonderjl/no-mistakes&type=date&legend=top-left" />
  </picture>
 </a>

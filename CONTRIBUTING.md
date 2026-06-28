@@ -9,7 +9,7 @@ A GitHub Actions check (`Require no-mistakes`) runs on every PR and fails if the
 
 ## Workflow
 
-1. Fork the repo, then clone the parent repo or set your local `origin` back to the parent repo (`git@github.com:kunchenguid/no-mistakes.git`).
+1. Fork the repo, then clone the parent repo or set your local `origin` back to the parent repo (`git@github.com:wonderjl/no-mistakes.git`).
 2. Create a branch and make your changes.
 3. Initialize or refresh the gate with your fork as the push target: `no-mistakes init --fork-url git@github.com:<you>/no-mistakes.git`.
 4. Commit your changes.
@@ -22,7 +22,7 @@ A GitHub Actions check (`Require no-mistakes`) runs on every PR and fails if the
 6. Run `no-mistakes` to attach to the pipeline, watch findings, and auto-fix or review as needed.
 7. Once the pipeline passes, it pushes the branch to your fork and opens the PR against the parent repo for you.
 
-See the [quick start](https://kunchenguid.github.io/no-mistakes/start-here/quick-start/) for the full first-run walkthrough.
+See the [quick start](https://wonderjl.github.io/no-mistakes/start-here/quick-start/) for the full first-run walkthrough.
 
 ## Repo conventions
 

@@ -22,7 +22,7 @@ const Description = "Validate your code changes through the no-mistakes pipeline
 // Markdown returns the complete SKILL.md document (YAML frontmatter plus body).
 // The output is deterministic so it can be regenerated and diff-checked. It is
 // the single rendering: the canonical public skill (surfaced by discovery
-// tools, e.g. `npx skills add kunchenguid/no-mistakes`) and the copy init
+// tools, e.g. `npx skills add wonderjl/no-mistakes`) and the copy init
 // installs at user level are identical. Older versions vendored a variant with
 // `metadata.internal: true` into each target repo to keep the vendored copy
 // out of repo skill listings; the user-level install is a genuine user
