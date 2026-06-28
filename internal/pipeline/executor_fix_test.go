@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/config"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 func TestExecutor_FixEmitsDiffAndFixReviewStatus(t *testing.T) {

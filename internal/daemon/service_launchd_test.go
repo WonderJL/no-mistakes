@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/paths"
 )
 
 func TestStartInstallsLaunchAgentAndBootstrapsManagedDaemon(t *testing.T) {
@@ -228,6 +228,58 @@ func TestStartLaunchAgentDoesNotRetryNonBusyBootstrapErrors(t *testing.T) {
 	_ = startLaunchAgent(p)
 	if bootstrapAttempts != 1 {
 		t.Fatalf("expected bootstrap to run once for non-busy errors, got %d attempts", bootstrapAttempts)
+	}
+}
+
+// TestInstallLaunchAgentBootsOutSuffixedLegacyKunchenguidDaemon locks in the
+// hard-fork migration. The user's currently-live daemon was installed under
+// the previous scoped label com.kunchenguid.no-mistakes.daemon.<suffix>. After
+// the label base is renamed to com.wonderjl, installing the new scoped agent
+// must boot out and delete that suffixed legacy instance for this root - not
+// just the bare pre-scoping label - so the old daemon is not orphaned in
+// launchd.
+func TestInstallLaunchAgentBootsOutSuffixedLegacyKunchenguidDaemon(t *testing.T) {
+	p := paths.WithRoot(filepath.Join(t.TempDir(), "nm-home"))
+	if err := p.EnsureDirs(); err != nil {
+		t.Fatal(err)
+	}
+	home := t.TempDir()
+
+	cleanup := stubServiceRuntime(t)
+	defer cleanup()
+	runtimeGOOS = "darwin"
+	serviceUserHomeDir = func() (string, error) { return home, nil }
+	serviceCurrentUser = func() (*user.User, error) { return &user.User{Uid: "501"}, nil }
+
+	suffixedLegacyLabel := legacyLaunchdServiceLabel + "." + serviceInstanceSuffix(p)
+	suffixedLegacyPath := filepath.Join(home, "Library", "LaunchAgents", suffixedLegacyLabel+".plist")
+	if err := os.MkdirAll(filepath.Dir(suffixedLegacyPath), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	// The live daemon's plist points at this root, so it matches.
+	if err := os.WriteFile(suffixedLegacyPath, []byte(renderLaunchAgent("/opt/no-mistakes/bin/no-mistakes", p, home)), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	var commands []string
+	serviceCommandRunner = func(name string, args ...string) ([]byte, error) {
+		commands = append(commands, name+" "+strings.Join(args, " "))
+		return nil, nil
+	}
+
+	if err := installLaunchAgent(p, "/opt/no-mistakes/bin/no-mistakes"); err != nil {
+		t.Fatal(err)
+	}
+
+	// Only the suffixed legacy daemon is seeded, so exactly one bootout must
+	// fire. Asserting the full command set (not a contains-scan) also proves
+	// the bare-label com.kunchenguid.no-mistakes.daemon bootout is NOT issued.
+	wantBootout := "launchctl bootout gui/501/" + suffixedLegacyLabel
+	if len(commands) != 1 || commands[0] != wantBootout {
+		t.Fatalf("install should issue exactly one bootout %q, got commands %v", wantBootout, commands)
+	}
+	if _, err := os.Stat(suffixedLegacyPath); !os.IsNotExist(err) {
+		t.Fatalf("suffixed legacy plist should be removed after migration, stat err = %v", err)
 	}
 }
 

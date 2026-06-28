@@ -9,9 +9,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	gitpkg "github.com/kunchenguid/no-mistakes/internal/git"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	gitpkg "github.com/wonderjl/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/paths"
 )
 
 // resolveSymlinks resolves symlinks in a path (needed on macOS where

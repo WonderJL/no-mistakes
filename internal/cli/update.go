@@ -1,24 +1,17 @@
 package cli
 
 import (
-	"github.com/kunchenguid/no-mistakes/internal/update"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/update"
 )
 
 func newUpdateCmd() *cobra.Command {
-	var beta bool
-	var yes bool
-	cmd := &cobra.Command{
+	return &cobra.Command{
 		Use:   "update",
-		Short: "Update no-mistakes and reset the daemon",
+		Short: "Report that built-in self-update is disabled",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return trackCommand("update", func() error {
-				return update.Run(cmd.Context(), cmd.OutOrStdout(), cmd.ErrOrStderr(), update.RunOptions{Beta: beta, Yes: yes, Stdin: cmd.InOrStdin()})
-			})
+			return update.Run(cmd.OutOrStdout())
 		},
 	}
-	cmd.Flags().BoolVar(&beta, "beta", false, "install the latest release including prereleases")
-	cmd.Flags().BoolVarP(&yes, "yes", "y", false, "answer yes to update safety prompts")
-	return cmd
 }

@@ -8,12 +8,12 @@ import (
 
 	toon "github.com/toon-format/toon-go"
 
-	"github.com/kunchenguid/no-mistakes/internal/daemon"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
-	"github.com/kunchenguid/no-mistakes/internal/skill"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/daemon"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/skill"
 )
 
 // recentRunsHomeLimit caps the recent-runs table on the home view. High enough
@@ -35,9 +35,7 @@ func newAxiCmd() *cobra.Command {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return trackAxiSurface("axi-home", "/axi", nil, func() error {
-				return runAxiHome(cmd)
-			})
+			return runAxiHome(cmd)
 		},
 	}
 

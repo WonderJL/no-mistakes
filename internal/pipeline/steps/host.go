@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/kunchenguid/no-mistakes/internal/bitbucket"
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
-	"github.com/kunchenguid/no-mistakes/internal/scm"
-	"github.com/kunchenguid/no-mistakes/internal/scm/github"
-	"github.com/kunchenguid/no-mistakes/internal/scm/gitlab"
+	"github.com/wonderjl/no-mistakes/internal/bitbucket"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/scm"
+	"github.com/wonderjl/no-mistakes/internal/scm/github"
+	"github.com/wonderjl/no-mistakes/internal/scm/gitlab"
 )
 
 // buildHost returns a scm.Host for the given provider, wired to sctx's

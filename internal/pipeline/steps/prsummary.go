@@ -12,8 +12,8 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 const (
@@ -59,7 +59,7 @@ func BuildPipelineSummary(steps []*db.StepResult, rounds map[string][]*db.StepRo
 	}
 
 	var b strings.Builder
-	b.WriteString("## Pipeline\n\nUpdates from [git push no-mistakes](https://github.com/kunchenguid/no-mistakes)\n\n")
+	b.WriteString("## Pipeline\n\nUpdates from [git push no-mistakes](https://github.com/wonderjl/no-mistakes)\n\n")
 	for i, detail := range detailBlocks {
 		if i > 0 {
 			b.WriteString("\n")

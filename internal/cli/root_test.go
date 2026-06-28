@@ -8,13 +8,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/gate"
-	"github.com/kunchenguid/no-mistakes/internal/git"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
-	"github.com/kunchenguid/no-mistakes/internal/types"
-	"github.com/kunchenguid/no-mistakes/internal/wizard"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/gate"
+	"github.com/wonderjl/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/wizard"
 )
 
 func TestRootYesRunsWizardNonInteractively(t *testing.T) {

@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/types"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 const (
@@ -24,21 +24,19 @@ func newStatsCmd() *cobra.Command {
 		Short: "Show historical no-mistakes usage stats",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return trackCommand("stats", func() error {
-				_, database, err := openResources()
-				if err != nil {
-					return err
-				}
-				defer database.Close()
+			_, database, err := openResources()
+			if err != nil {
+				return err
+			}
+			defer database.Close()
 
-				stats, err := database.GetStats()
-				if err != nil {
-					return fmt.Errorf("get stats: %w", err)
-				}
+			stats, err := database.GetStats()
+			if err != nil {
+				return fmt.Errorf("get stats: %w", err)
+			}
 
-				fmt.Fprintln(cmd.OutOrStdout(), renderStatsDashboard(stats))
-				return nil
-			})
+			fmt.Fprintln(cmd.OutOrStdout(), renderStatsDashboard(stats))
+			return nil
 		},
 	}
 }

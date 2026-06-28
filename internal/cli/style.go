@@ -2,7 +2,7 @@ package cli
 
 import (
 	"github.com/charmbracelet/lipgloss"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 var (

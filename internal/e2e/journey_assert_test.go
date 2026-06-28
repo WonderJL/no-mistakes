@@ -5,8 +5,8 @@ package e2e
 import (
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 func TestValidateSkippedSteps(t *testing.T) {

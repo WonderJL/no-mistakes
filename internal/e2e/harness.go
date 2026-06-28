@@ -19,9 +19,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // Harness wires together the temp filesystem state needed to run the real
@@ -141,13 +141,6 @@ func NewHarness(t *testing.T, opts SetupOpts) *Harness {
 	// Give the daemon room to come up. Startup may spend up to 30s resolving
 	// the login-shell environment before the IPC socket is opened.
 	t.Setenv("NM_TEST_DAEMON_START_TIMEOUT", e2eDaemonStartTimeout)
-
-	// Disable telemetry attempts (the package would no-op anyway, but
-	// avoid a network DNS lookup on each command).
-	t.Setenv("NO_MISTAKES_TELEMETRY", "off")
-	// Disable background update checks so helper processes do not write
-	// update-check.json while testing.T is removing the temp directory.
-	t.Setenv("NO_MISTAKES_NO_UPDATE_CHECK", "1")
 
 	h.writeGlobalConfig()
 	h.initGitRepos()

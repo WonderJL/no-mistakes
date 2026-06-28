@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/kunchenguid/no-mistakes/internal/types"
 	"github.com/muesli/termenv"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 func TestRenderFindings_ViewportShowsSubset(t *testing.T) {
@@ -362,7 +362,7 @@ func TestModel_View_CIShortTerminalKeepsStatusPanel(t *testing.T) {
 
 	run := testRunWithCI()
 	run.Steps[5].Status = types.StepStatusRunning
-	run.PRURL = ptr("https://github.com/kunchenguid/no-mistakes/pull/42")
+	run.PRURL = ptr("https://github.com/wonderjl/no-mistakes/pull/42")
 
 	m := NewModel("/tmp/sock", nil, run)
 	m.width = 80

@@ -11,16 +11,15 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/agent"
-	"github.com/kunchenguid/no-mistakes/internal/config"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/git"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
-	"github.com/kunchenguid/no-mistakes/internal/pipeline/steps"
-	"github.com/kunchenguid/no-mistakes/internal/telemetry"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/agent"
+	"github.com/wonderjl/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/pipeline/steps"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // StepFactory creates pipeline steps for a run. Defaults to steps.AllSteps.
@@ -256,18 +255,7 @@ func (m *RunManager) HandleRerun(ctx context.Context, repoID, branch string, ski
 // A non-empty intent is stamped onto the run as agent-supplied, so the intent
 // step uses it instead of inferring from transcripts.
 func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSHA, baseSHA, trigger string, skipSteps []types.StepName, intent string) (string, error) {
-	branchRole := telemetryBranchRole(branch, repo.DefaultBranch)
-	trackStartFailure := func(stage string) {
-		telemetry.Track("run", telemetry.Fields{
-			"action":      "start_failed",
-			"trigger":     trigger,
-			"branch_role": branchRole,
-			"stage":       stage,
-		})
-	}
-
 	if m.shuttingDown.Load() {
-		trackStartFailure("daemon_shutdown")
 		return "", fmt.Errorf("daemon is shutting down")
 	}
 
@@ -285,7 +273,6 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 	// Create run record.
 	run, err := m.db.InsertRun(repo.ID, branch, headSHA, baseSHA)
 	if err != nil {
-		trackStartFailure("create_run")
 		return "", fmt.Errorf("create run: %w", err)
 	}
 
@@ -310,12 +297,10 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 	wtDir := m.paths.WorktreeDir(repo.ID, run.ID)
 	if err := git.WorktreeAdd(ctx, gateDir, wtDir, headSHA); err != nil {
 		m.db.UpdateRunError(run.ID, fmt.Sprintf("create worktree: %s", err))
-		trackStartFailure("create_worktree")
 		return "", fmt.Errorf("create worktree: %w", err)
 	}
 	if err := git.CopyLocalUserIdentity(ctx, repo.WorkingPath, wtDir); err != nil {
 		m.db.UpdateRunError(run.ID, fmt.Sprintf("configure worktree git identity: %s", err))
-		trackStartFailure("configure_worktree_identity")
 		return "", fmt.Errorf("configure worktree git identity: %w", err)
 	}
 	// Fetch the trusted default branch and resolve it to an exact commit SHA
@@ -352,13 +337,11 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 	globalCfg, err := config.LoadGlobal(m.paths.ConfigFile())
 	if err != nil {
 		m.db.UpdateRunError(run.ID, fmt.Sprintf("load config: %s", err))
-		trackStartFailure("load_global_config")
 		return "", fmt.Errorf("load global config: %w", err)
 	}
 	repoCfg, err := config.LoadRepo(wtDir)
 	if err != nil {
 		m.db.UpdateRunError(run.ID, fmt.Sprintf("load config: %s", err))
-		trackStartFailure("load_repo_config")
 		return "", fmt.Errorf("load repo config: %w", err)
 	}
 	// SECURITY: load the code-executing selection fields (commands.* and
@@ -395,7 +378,6 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 	} else {
 		if err := cfg.ResolveAgent(ctx, exec.LookPath); err != nil {
 			m.db.UpdateRunError(run.ID, err.Error())
-			trackStartFailure("resolve_agent")
 			return "", err
 		}
 		var agErr error
@@ -404,7 +386,6 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 		})
 		if agErr != nil {
 			m.db.UpdateRunError(run.ID, fmt.Sprintf("create agent: %s", agErr))
-			trackStartFailure("create_agent")
 			return "", fmt.Errorf("create agent: %w", agErr)
 		}
 		// Steer every pipeline agent to keep writes inside the worktree and
@@ -414,14 +395,6 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 	}
 
 	execSteps := m.steps()
-	telemetry.Track("run", telemetry.Fields{
-		"action":      "started",
-		"trigger":     trigger,
-		"agent":       string(cfg.Agent),
-		"branch_role": branchRole,
-		"step_count":  len(execSteps),
-		"demo_mode":   steps.IsDemoMode(),
-	})
 
 	// Create executor with event broadcast.
 	runCtx, cancel := context.WithCancelCause(context.Background())
@@ -442,7 +415,6 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 	// Launch pipeline in background.
 	m.wg.Add(1)
 	go func() {
-		startedAt := time.Now()
 		defer m.wg.Done()
 		defer close(done)
 		defer func() {
@@ -451,20 +423,6 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 				slog.Error("panic in pipeline goroutine", "run_id", run.ID, "panic", r)
 				run.Status = types.RunFailed
 				run.Error = &errMsg
-				fields := telemetry.Fields{
-					"action":      "finished",
-					"trigger":     trigger,
-					"agent":       string(cfg.Agent),
-					"branch_role": branchRole,
-					"status":      string(run.Status),
-					"duration_ms": time.Since(startedAt).Milliseconds(),
-					"step_count":  len(execSteps),
-					"pr_created":  run.PRURL != nil && *run.PRURL != "",
-				}
-				if failedStep := telemetryFailedStepName(m.db, run.ID); failedStep != "" {
-					fields["failed_step"] = failedStep
-				}
-				telemetry.Track("run", fields)
 				if dbErr := m.db.UpdateRunErrorStatus(run.ID, errMsg, types.RunFailed); dbErr != nil {
 					slog.Error("failed to update run after panic", "run_id", run.ID, "error", dbErr)
 				}
@@ -486,60 +444,13 @@ func (m *RunManager) startRun(ctx context.Context, repo *db.Repo, branch, headSH
 		}()
 
 		if err := executor.Execute(runCtx, run, repo, wtDir); err != nil {
-			fields := telemetry.Fields{
-				"action":      "finished",
-				"trigger":     trigger,
-				"agent":       string(cfg.Agent),
-				"branch_role": branchRole,
-				"status":      string(run.Status),
-				"duration_ms": time.Since(startedAt).Milliseconds(),
-				"step_count":  len(execSteps),
-				"pr_created":  run.PRURL != nil && *run.PRURL != "",
-			}
-			if failedStep := telemetryFailedStepName(m.db, run.ID); failedStep != "" {
-				fields["failed_step"] = failedStep
-			}
-			telemetry.Track("run", fields)
 			slog.Error("pipeline failed", "run_id", run.ID, "error", err)
 		} else {
-			telemetry.Track("run", telemetry.Fields{
-				"action":      "finished",
-				"trigger":     trigger,
-				"agent":       string(cfg.Agent),
-				"branch_role": branchRole,
-				"status":      string(run.Status),
-				"duration_ms": time.Since(startedAt).Milliseconds(),
-				"step_count":  len(execSteps),
-				"pr_created":  run.PRURL != nil && *run.PRURL != "",
-			})
 			slog.Info("pipeline completed", "run_id", run.ID)
 		}
 	}()
 
 	return run.ID, nil
-}
-
-func telemetryBranchRole(branch, defaultBranch string) string {
-	if branch == "" {
-		return "unknown"
-	}
-	if defaultBranch != "" && branch == defaultBranch {
-		return "default"
-	}
-	return "feature"
-}
-
-func telemetryFailedStepName(database *db.DB, runID string) string {
-	steps, err := database.GetStepsByRun(runID)
-	if err != nil {
-		return ""
-	}
-	for _, step := range steps {
-		if step.Status == types.StepStatusFailed {
-			return string(step.StepName)
-		}
-	}
-	return ""
 }
 
 // HandleRespond routes a user approval action to the executor for the given run.

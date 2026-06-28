@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/agent"
-	"github.com/kunchenguid/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/agent"
+	"github.com/wonderjl/no-mistakes/internal/config"
 )
 
 func TestCIStep_CIFailureAutoFix(t *testing.T) {

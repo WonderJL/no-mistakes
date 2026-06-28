@@ -3,8 +3,8 @@ package steps
 import (
 	"encoding/json"
 
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // Finding represents a single code review or lint finding.

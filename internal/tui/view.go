@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
 )
 
 func (m Model) View() string {

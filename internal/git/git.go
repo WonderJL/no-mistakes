@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/safeurl"
+	"github.com/wonderjl/no-mistakes/internal/safeurl"
 )
 
 // EmptyTreeSHA is the well-known SHA of an empty tree in git.

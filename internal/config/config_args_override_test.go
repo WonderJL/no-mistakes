@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 func TestLoadGlobal_AgentArgsOverride(t *testing.T) {

@@ -1,19 +1,14 @@
 <h1 align="center"><code>git push no-mistakes</code></h1>
 <p align="center">
-  <a href="https://github.com/kunchenguid/no-mistakes/actions/workflows/release.yml"
-    ><img
-      alt="Release"
-      src="https://img.shields.io/github/actions/workflow/status/kunchenguid/no-mistakes/release.yml?style=flat-square&label=release"
-  /></a>
   <a href="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue?style=flat-square"
     ><img
       alt="Platform"
       src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue?style=flat-square"
   /></a>
-  <a href="https://x.com/kunchenguid"
+  <a href="https://x.com/wonderjl"
     ><img
       alt="X"
-      src="https://img.shields.io/badge/X-@kunchenguid-black?style=flat-square"
+      src="https://img.shields.io/badge/X-@wonderjl-black?style=flat-square"
   /></a>
   <a href="https://discord.gg/Wsy2NpnZDu"
     ><img
@@ -27,7 +22,7 @@
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/kunchenguid/no-mistakes/main/demo.gif" alt="no-mistakes demo" width="800" />
+  <img src="https://raw.githubusercontent.com/wonderjl/no-mistakes/main/demo.gif" alt="no-mistakes demo" width="800" />
 </p>
 
 `no-mistakes` 在你真实的远端前面放了一个本地 git 代理。
@@ -39,7 +34,7 @@
 - **人始终说了算** —— 自动修复，还是逐条审查 findings，你决定。
 - **默认就是干净 PR** —— 推送、开 PR、盯 CI、自动修复失败，一气呵成。
 
-完整文档：<https://kunchenguid.github.io/no-mistakes/>
+完整文档：<https://wonderjl.github.io/no-mistakes/>
 
 ## 工作原理
 
@@ -63,10 +58,10 @@
 ## 安装
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/kunchenguid/no-mistakes/main/docs/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/wonderjl/no-mistakes/main/docs/install.sh | sh
 ```
 
-Windows、Go install 以及从源码构建的说明，见[安装指南](https://kunchenguid.github.io/no-mistakes/start-here/installation/)。
+Windows、Go install 以及从源码构建的说明，见[安装指南](https://wonderjl.github.io/no-mistakes/start-here/installation/)。
 
 ## 快速上手
 
@@ -112,7 +107,7 @@ $ no-mistakes
 
 `no-mistakes init` 会为 Claude Code 及其他 agent 安装 `/no-mistakes` skill。底层上这个 skill 驱动的是 `no-mistakes axi` —— 同一套审批流程的非交互式 TOON 接口。
 
-完整的首次运行走查见[快速上手](https://kunchenguid.github.io/no-mistakes/start-here/quick-start/)。
+完整的首次运行走查见[快速上手](https://wonderjl.github.io/no-mistakes/start-here/quick-start/)。
 
 ## 开发
 
@@ -134,10 +129,10 @@ make docs    # 在 docs/dist 构建 Astro 文档站
 
 ## Star 历史
 
-<a href="https://www.star-history.com/?repos=kunchenguid%2Fno-mistakes&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=wonderjl%2Fno-mistakes&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=kunchenguid/no-mistakes&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=kunchenguid/no-mistakes&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=kunchenguid/no-mistakes&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=wonderjl/no-mistakes&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=wonderjl/no-mistakes&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=wonderjl/no-mistakes&type=date&legend=top-left" />
  </picture>
 </a>

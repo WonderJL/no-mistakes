@@ -34,9 +34,6 @@ func (p *Paths) DB() string         { return filepath.Join(p.root, "state.sqlite
 func (p *Paths) Socket() string     { return filepath.Join(p.root, "socket") }
 func (p *Paths) PIDFile() string    { return filepath.Join(p.root, "daemon.pid") }
 func (p *Paths) ConfigFile() string { return filepath.Join(p.root, "config.yaml") }
-func (p *Paths) UpdateCheckFile() string {
-	return filepath.Join(p.root, "update-check.json")
-}
 
 func (p *Paths) ReposDir() string { return filepath.Join(p.root, "repos") }
 func (p *Paths) RepoDir(repoID string) string {

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/agent"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/agent"
+	"github.com/wonderjl/no-mistakes/internal/paths"
 )
 
 // orphanStartTimeTolerance bounds the acceptable difference between the

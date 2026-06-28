@@ -3,7 +3,7 @@ package db
 import (
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 func TestRunInsertAndGet(t *testing.T) {

@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/scm"
-	"github.com/kunchenguid/no-mistakes/internal/scm/github"
+	"github.com/wonderjl/no-mistakes/internal/scm"
+	"github.com/wonderjl/no-mistakes/internal/scm/github"
 )
 
 func main() {

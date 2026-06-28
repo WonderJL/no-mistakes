@@ -6,10 +6,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/git"
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
-	"github.com/kunchenguid/no-mistakes/internal/safeurl"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/safeurl"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // PushStep force-pushes the worktree state to the configured push remote.

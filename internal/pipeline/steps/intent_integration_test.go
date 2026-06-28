@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/agent"
-	"github.com/kunchenguid/no-mistakes/internal/config"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/agent"
+	"github.com/wonderjl/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
 )
 
 // fakeIntentAgent always returns a canned summary - bypasses any real LLM.

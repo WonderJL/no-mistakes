@@ -5,10 +5,10 @@ import (
 
 	toon "github.com/toon-format/toon-go"
 
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/types"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // maxFindingDesc caps a finding description rendered inline. Findings are the

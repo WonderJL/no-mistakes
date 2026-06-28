@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // roundHistoryPromptSection builds a compact, sanitized record of the prior

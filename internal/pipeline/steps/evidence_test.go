@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/config"
 )
 
 func TestResolveTestEvidenceDir_DefaultUsesTempRunID(t *testing.T) {

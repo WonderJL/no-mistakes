@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 func TestBuildPipelineSummary_AutoFix(t *testing.T) {

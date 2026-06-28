@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kunchenguid/no-mistakes/internal/bitbucket"
+	"github.com/wonderjl/no-mistakes/internal/bitbucket"
 )
 
 // resolveBitbucketRepoRef parses a Bitbucket repo reference from the upstream

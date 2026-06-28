@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/scm"
+	"github.com/wonderjl/no-mistakes/internal/scm"
 )
 
 func TestRepoSlug(t *testing.T) {

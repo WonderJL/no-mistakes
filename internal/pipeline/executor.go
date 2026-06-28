@@ -10,14 +10,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/agent"
-	"github.com/kunchenguid/no-mistakes/internal/config"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/git"
-	"github.com/kunchenguid/no-mistakes/internal/ipc"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
-	"github.com/kunchenguid/no-mistakes/internal/telemetry"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/agent"
+	"github.com/wonderjl/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/ipc"
+	"github.com/wonderjl/no-mistakes/internal/paths"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // EventFunc is called when a pipeline event occurs, for streaming to subscribers.
@@ -318,7 +317,6 @@ func (e *Executor) executeStep(ctx context.Context, step Step, sr *db.StepResult
 			fixableFindings := autoFixableFindingsJSON(outcome.Findings)
 			if fixableFindings != "" {
 				autoFixAttempts++
-				telemetry.Track("fix", e.fixTelemetryFields("auto", stepName, findingsCount(fixableFindings), autoFixAttempts))
 				slog.Info("auto-fixing step", "step", stepName, "attempt", autoFixAttempts, "max", autoFixLimit)
 				executionMS += time.Since(phaseStart).Milliseconds()
 				if dbErr := e.db.UpdateStepStatus(sr.ID, types.StepStatusFixing); dbErr != nil {
@@ -388,19 +386,6 @@ func (e *Executor) executeStep(ctx context.Context, step Step, sr *db.StepResult
 			return false, fmt.Errorf("step %s: waiting for approval: %w", stepName, err)
 		}
 
-		approvalFields := telemetry.Fields{
-			"step":       string(stepName),
-			"action":     string(response.action),
-			"fix_review": sctx.Fixing,
-		}
-		if agentName := e.telemetryAgentName(); agentName != "" {
-			approvalFields["agent"] = agentName
-		}
-		if selectedCount := selectedFindingCount(outcome.Findings, response.findingIDs); selectedCount > 0 {
-			approvalFields["selected_findings_count"] = selectedCount
-		}
-		telemetry.Track("approval", approvalFields)
-
 		switch response.action {
 		case types.ActionApprove:
 			// Approved - execution already frozen in executionMS, reset phaseStart
@@ -424,7 +409,6 @@ func (e *Executor) executeStep(ctx context.Context, step Step, sr *db.StepResult
 			return false, fmt.Errorf("step %s: aborted by user", stepName)
 
 		case types.ActionFix:
-			telemetry.Track("fix", e.fixTelemetryFields("user", stepName, selectedFindingCount(outcome.Findings, response.findingIDs), 0))
 			// Fix - mark step as fixing, resume execution timer, re-execute.
 			phaseStart = time.Now()
 			if dbErr := e.db.UpdateStepStatus(sr.ID, types.StepStatusFixing); dbErr != nil {
@@ -580,25 +564,6 @@ func (e *Executor) emitStepEventWithFindingsDiffAndError(eventType ipc.EventType
 		event.Diff = &diff
 	}
 	e.onEvent(event)
-	if !shouldTrackStepTelemetry(eventType, status) {
-		return
-	}
-
-	fields := telemetry.Fields{
-		"event":  string(eventType),
-		"step":   string(stepName),
-		"status": status,
-	}
-	if agentName := e.telemetryAgentName(); agentName != "" {
-		fields["agent"] = agentName
-	}
-	if durationMS != nil {
-		fields["duration_ms"] = *durationMS
-	}
-	if findings != "" {
-		fields["findings_count"] = findingsCount(findings)
-	}
-	telemetry.Track("step", fields)
 }
 
 func (e *Executor) findingStatsForStep(runID string, stepName types.StepName) db.StepStats {
@@ -619,18 +584,6 @@ func (e *Executor) findingStatsForStep(runID string, stepName types.StepName) db
 	return db.StepStats{StepName: stepName}
 }
 
-func shouldTrackStepTelemetry(eventType ipc.EventType, status string) bool {
-	if eventType != ipc.EventStepCompleted {
-		return false
-	}
-	switch types.StepStatus(status) {
-	case types.StepStatusAwaitingApproval, types.StepStatusFixReview, types.StepStatusFailed:
-		return true
-	default:
-		return false
-	}
-}
-
 func (e *Executor) emitLogChunk(run *db.Run, repo *db.Repo, stepName types.StepName, content string) {
 	e.onEvent(ipc.Event{
 		Type:     ipc.EventLogChunk,
@@ -639,41 +592,4 @@ func (e *Executor) emitLogChunk(run *db.Run, repo *db.Repo, stepName types.StepN
 		StepName: &stepName,
 		Content:  &content,
 	})
-}
-
-func (e *Executor) telemetryAgentName() string {
-	if e.config == nil || e.config.Agent == "" {
-		return ""
-	}
-	return string(e.config.Agent)
-}
-
-func (e *Executor) fixTelemetryFields(source string, stepName types.StepName, selectedCount int, attempt int) telemetry.Fields {
-	fields := telemetry.Fields{
-		"source":                  source,
-		"step":                    string(stepName),
-		"selected_findings_count": selectedCount,
-	}
-	if agentName := e.telemetryAgentName(); agentName != "" {
-		fields["agent"] = agentName
-	}
-	if attempt > 0 {
-		fields["attempt"] = attempt
-	}
-	return fields
-}
-
-func findingsCount(raw string) int {
-	findings, err := types.ParseFindingsJSON(raw)
-	if err != nil {
-		return 0
-	}
-	return len(findings.Items)
-}
-
-func selectedFindingCount(raw string, ids []string) int {
-	if len(ids) > 0 {
-		return len(ids)
-	}
-	return findingsCount(raw)
 }

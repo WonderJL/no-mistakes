@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kunchenguid/no-mistakes/internal/scm"
+	"github.com/wonderjl/no-mistakes/internal/scm"
 )
 
 func TestGetMergeableStateTreatsBlockedStatusesAsResolved(t *testing.T) {

@@ -17,14 +17,13 @@ jobs:
   check:
     name: PR must be raised via no-mistakes
     runs-on: ubuntu-latest
-    # Known automation accounts are exempt so the release pipeline keeps working:
-    # - github-actions[bot] opens the release-please PR via GITHUB_TOKEN
+    # Known automation accounts are exempt so bot-authored PRs are not blocked:
+    # - github-actions[bot] opens PRs via GITHUB_TOKEN-based workflows
     # - dependabot[bot] opens dependency update PRs
     # Other authors (human or bot) must raise PRs through `git push no-mistakes`.
     if: >-
       github.event.pull_request.user.login != 'github-actions[bot]' &&
-      github.event.pull_request.user.login != 'dependabot[bot]' &&
-      github.event.pull_request.user.login != 'release-please[bot]'
+      github.event.pull_request.user.login != 'dependabot[bot]'
     steps:
       - name: Verify no-mistakes signature in PR body
         env:
@@ -33,7 +32,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -eu
-          marker='Updates from [git push no-mistakes](https://github.com/kunchenguid/no-mistakes)'
+          marker='Updates from [git push no-mistakes](https://github.com/wonderjl/no-mistakes)'
           if printf '%s' "${PR_BODY:-}" | grep -qF -- "$marker"; then
             echo "Found no-mistakes signature in PR #${PR_NUMBER} body."
             exit 0

@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/cimonitor"
-	"github.com/kunchenguid/no-mistakes/internal/pipeline"
-	"github.com/kunchenguid/no-mistakes/internal/scm"
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/cimonitor"
+	"github.com/wonderjl/no-mistakes/internal/pipeline"
+	"github.com/wonderjl/no-mistakes/internal/scm"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 const defaultChecksGracePeriod = 60 * time.Second

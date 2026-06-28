@@ -6,12 +6,12 @@ import (
 	"io"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/kunchenguid/no-mistakes/internal/buildinfo"
-	"github.com/kunchenguid/no-mistakes/internal/db"
-	"github.com/kunchenguid/no-mistakes/internal/git"
-	"github.com/kunchenguid/no-mistakes/internal/paths"
 	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
+	"github.com/wonderjl/no-mistakes/internal/buildinfo"
+	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/git"
+	"github.com/wonderjl/no-mistakes/internal/paths"
 )
 
 // exitError carries an explicit process exit code. Commands that render their
@@ -69,13 +69,11 @@ func newRootCmd() *cobra.Command {
 		// wizard flow is interactive, while --yes auto-accepts defaults and can
 		// still fall back to headless mode when no TTY is available.
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return trackCommand("root", func() error {
-				skipSteps, err := parseSkipSteps(skipValue)
-				if err != nil {
-					return err
-				}
-				return attachRun(cmd.Context(), cmd.OutOrStdout(), "", true, autoYes, skipSteps)
-			})
+			skipSteps, err := parseSkipSteps(skipValue)
+			if err != nil {
+				return err
+			}
+			return attachRun(cmd.Context(), cmd.OutOrStdout(), "", true, autoYes, skipSteps)
 		},
 	}
 

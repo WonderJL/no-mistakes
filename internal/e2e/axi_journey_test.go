@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/types"
+	"github.com/wonderjl/no-mistakes/internal/types"
 )
 
 // axiIntent is a distinctive intent string so we can prove it flowed all the

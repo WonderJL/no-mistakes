@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kunchenguid/no-mistakes/internal/agent"
-	"github.com/kunchenguid/no-mistakes/internal/config"
-	"github.com/kunchenguid/no-mistakes/internal/scm"
+	"github.com/wonderjl/no-mistakes/internal/agent"
+	"github.com/wonderjl/no-mistakes/internal/config"
+	"github.com/wonderjl/no-mistakes/internal/scm"
 )
 
 func TestCIStep_MergeConflictDetected_ReturnsNeedsApproval(t *testing.T) {

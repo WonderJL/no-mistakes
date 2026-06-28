@@ -35,7 +35,7 @@ Most implementation code lives under `internal/`.
 
 - Run one package: `go test ./internal/cli`
 - Run one package with race detector: `go test -race ./internal/cli`
-- Run one top-level test: `go test ./internal/update -run '^TestCompareVersions$'`
+- Run one top-level test: `go test ./internal/update -run '^TestRunReportsDisabled$'`
 - Run a subset by regex: `go test ./internal/tui -run 'TestModel_'`
 - Re-run without test cache: `go test ./internal/cli -run '^TestDoctorBasic$' -count=1`
 
