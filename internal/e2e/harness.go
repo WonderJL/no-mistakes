@@ -142,10 +142,6 @@ func NewHarness(t *testing.T, opts SetupOpts) *Harness {
 	// the login-shell environment before the IPC socket is opened.
 	t.Setenv("NM_TEST_DAEMON_START_TIMEOUT", e2eDaemonStartTimeout)
 
-	// Disable background update checks so helper processes do not write
-	// update-check.json while testing.T is removing the temp directory.
-	t.Setenv("NO_MISTAKES_NO_UPDATE_CHECK", "1")
-
 	h.writeGlobalConfig()
 	h.initGitRepos()
 

@@ -5,32 +5,15 @@ import (
 	"testing"
 )
 
-func TestUpdateCommandDevBuild(t *testing.T) {
+func TestUpdateCommandDisabled(t *testing.T) {
 	out, err := executeCmd("update")
 	if err != nil {
 		t.Fatalf("update failed: %v\noutput: %s", err, out)
 	}
-	if !strings.Contains(out, "self-update unavailable for development builds") {
-		t.Fatalf("unexpected update output: %s", out)
+	if !strings.Contains(out, "self-update is disabled") {
+		t.Fatalf("expected disabled message, got: %s", out)
 	}
-}
-
-func TestUpdateCommandBetaFlag(t *testing.T) {
-	out, err := executeCmd("update", "--beta")
-	if err != nil {
-		t.Fatalf("update --beta failed: %v\noutput: %s", err, out)
-	}
-	if !strings.Contains(out, "self-update unavailable for development builds") {
-		t.Fatalf("unexpected update output: %s", out)
-	}
-}
-
-func TestUpdateCommandYesFlag(t *testing.T) {
-	out, err := executeCmd("update", "-y")
-	if err != nil {
-		t.Fatalf("update -y failed: %v\noutput: %s", err, out)
-	}
-	if !strings.Contains(out, "self-update unavailable for development builds") {
-		t.Fatalf("unexpected update output: %s", out)
+	if !strings.Contains(out, "github.com/wonderjl/no-mistakes") {
+		t.Fatalf("expected fork install guidance, got: %s", out)
 	}
 }
