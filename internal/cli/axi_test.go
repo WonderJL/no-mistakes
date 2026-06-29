@@ -346,6 +346,72 @@ func TestAxiHomeStartsCurrentBranchWhenOtherBranchIsActive(t *testing.T) {
 	}
 }
 
+// TestAxiHomeSurfacesLinkedWorktree covers the worktree-compatibility display:
+// when the agent runs from a linked worktree, findRepo resolves the gate to its
+// registered MAIN checkout (repo), but axi run validates the worktree's branch.
+// The home view must surface the worktree path and explain this so an agent does
+// not misread repo=<main checkout> as a misconfiguration.
+func TestAxiHomeSurfacesLinkedWorktree(t *testing.T) {
+	repoDir := t.TempDir()
+	nmHome := t.TempDir()
+	t.Setenv("NM_HOME", nmHome)
+	run(t, repoDir, "git", "init")
+	run(t, repoDir, "git", "config", "user.email", "test@test.com")
+	run(t, repoDir, "git", "config", "user.name", "Test")
+	// Disable commit signing so the temp repo does not inherit a global
+	// gpg.ssh signing policy that would fail with no agent/key (see the
+	// daemon-signing limitation in hosts/no-mistakes/PROVENANCE.md).
+	run(t, repoDir, "git", "config", "commit.gpgsign", "false")
+	run(t, repoDir, "git", "commit", "--allow-empty", "-m", "initial")
+	rawRoot, err := filepath.EvalSymlinks(repoDir)
+	if err != nil {
+		rawRoot = repoDir
+	}
+
+	// Add a linked worktree on a feature branch and operate from inside it.
+	wtDir := filepath.Join(t.TempDir(), "wt")
+	run(t, repoDir, "git", "worktree", "add", "-b", "feature/wt", wtDir)
+	rawWt, err := filepath.EvalSymlinks(wtDir)
+	if err != nil {
+		rawWt = wtDir
+	}
+	chdir(t, rawWt)
+
+	p := paths.WithRoot(nmHome)
+	if err := p.EnsureDirs(); err != nil {
+		t.Fatalf("ensure dirs: %v", err)
+	}
+	database, err := db.Open(p.DB())
+	if err != nil {
+		t.Fatalf("open db: %v", err)
+	}
+	defer database.Close()
+	// Gate is registered against the MAIN checkout, mirroring findRepo's
+	// worktree fallback (repo lookup misses the worktree, hits the main root).
+	if _, err := database.InsertRepoWithID("repo-1", rawRoot, "origin", "main"); err != nil {
+		t.Fatalf("insert repo: %v", err)
+	}
+
+	var out bytes.Buffer
+	cmd := &cobra.Command{}
+	cmd.SetContext(context.Background())
+	cmd.SetOut(&out)
+	if err := runAxiHome(cmd); err != nil {
+		t.Fatalf("axi home: %v\n%s", err, out.String())
+	}
+	got := out.String()
+	for _, want := range []string{
+		"repo: " + rawRoot,
+		"worktree: " + rawWt,
+		"current_branch: feature/wt",
+		"linked worktree",
+	} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("axi home missing %q in:\n%s", want, got)
+		}
+	}
+}
+
 func TestResolveRunPrefersCurrentBranchLatestRun(t *testing.T) {
 	database := openTestDB(t)
 	repo, err := database.InsertRepo(t.TempDir(), "origin", "main")

@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/wonderjl/no-mistakes/internal/daemon"
 	"github.com/wonderjl/no-mistakes/internal/db"
+	"github.com/wonderjl/no-mistakes/internal/git"
 	"github.com/wonderjl/no-mistakes/internal/ipc"
 	"github.com/wonderjl/no-mistakes/internal/paths"
 	"github.com/wonderjl/no-mistakes/internal/skill"
@@ -116,13 +117,20 @@ func runAxiHome(cmd *cobra.Command) error {
 		branchDisplay = "unknown"
 	}
 
+	worktree := linkedWorktreePath(env.repo.WorkingPath)
+
 	fields := []toon.Field{
 		{Key: "bin", Value: collapseHome(executablePath())},
 		{Key: "description", Value: skill.Description},
 		{Key: "repo", Value: env.repo.WorkingPath},
-		{Key: "current_branch", Value: branchDisplay},
-		{Key: "daemon", Value: daemonState},
 	}
+	if worktree != "" {
+		fields = append(fields, toon.Field{Key: "worktree", Value: worktree})
+	}
+	fields = append(fields,
+		toon.Field{Key: "current_branch", Value: branchDisplay},
+		toon.Field{Key: "daemon", Value: daemonState},
+	)
 
 	var currentActive *db.Run
 	if branch != "" {
@@ -165,6 +173,9 @@ func runAxiHome(cmd *cobra.Command) error {
 	fields = append(fields, runsFields(runs, recentRunsHomeLimit)...)
 
 	help := []string{}
+	if worktree != "" {
+		help = append(help, "You are in a linked worktree; `axi run` validates THIS worktree's branch. The gate is registered against the main checkout (repo), which is expected.")
+	}
 	switch {
 	case currentActive == nil:
 		help = append(help, `Run `+"`"+`no-mistakes axi run --intent "<what the user set out to accomplish>"`+"`"+` to validate your changes`)
@@ -180,6 +191,20 @@ func runAxiHome(cmd *cobra.Command) error {
 
 	emitDoc(cmd, fields...)
 	return nil
+}
+
+// linkedWorktreePath returns the current directory's git toplevel when it is a
+// linked worktree distinct from the gate's registered repo path, or "" when the
+// cwd is the main checkout (or git resolution fails). The gate registers a repo
+// against its main checkout (see findRepo's worktree fallback), so an agent
+// running from a worktree sees repo=<main checkout>; surfacing the worktree path
+// keeps that from reading as a misconfiguration.
+func linkedWorktreePath(registeredRepoPath string) string {
+	root, err := git.FindGitRoot(".")
+	if err != nil || root == registeredRepoPath {
+		return ""
+	}
+	return root
 }
 
 // runsFields renders a recent-runs table with an aggregate count, showing at
